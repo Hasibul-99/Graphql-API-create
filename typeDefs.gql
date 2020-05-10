@@ -31,8 +31,15 @@ type Token {
     token: String!
 }
 
+type PostPage {
+    posts: [Post]
+    hasMore: Boolean
+}
+
 type Query {
+    getCurrentUser: User
     getPosts: [Post]
+    (pageNum: Int!, pageSize: Int!): PostPage
 }
 
 type Mutation {
