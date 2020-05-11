@@ -31,7 +31,7 @@ type Token {
     token: String!
 }
 
-type PostPage {
+type PostsPage {
     posts: [Post]
     hasMore: Boolean
 }
@@ -39,11 +39,13 @@ type PostPage {
 type Query {
     getCurrentUser: User
     getPosts: [Post]
-    (pageNum: Int!, pageSize: Int!): PostPage
+    getPost(postId: ID!): Post!
+    infiniteScrollPosts(pageNum: Int!, pageSize: Int!): PostsPage
 }
 
 type Mutation {
     signupUsers(username: String!, email: String!, password: String!): Token!
     signinUser(username: String!, password: String!): Token!
     addpost(title: String!, imageUrl: String!, categories: [String]!, description: String!, creatorId: ID!): Post!
+    addPostMessage(messageBody: String!, userId: ID!, postId: ID!) Message!
 }

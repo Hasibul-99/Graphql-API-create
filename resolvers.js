@@ -29,7 +29,36 @@ module.exports = {
             return posts;
         },
 
-        infiniteScrollPosts: async
+        getPost: async (_, {postId}, {Post}) => {
+            const post = await Post.findOne({_id: postId}).populate({
+                path: "massages.massageUser",
+                model: "User"
+            });
+
+            return post;
+        },
+
+        infiniteScrollPosts: async (_, {pagenum, pageSize}, {Post}) => {
+            let posts;
+
+            if (pagenum === 1) {
+                posts = await Post.find({}).sort({createdDate: 'desc'}).populate({
+                    path: 'createdBy',
+                    model: 'User'
+                }).limit(pageSize);
+            } else {
+            // if page number is greater than one. figure out how many documnets to skip. 
+                const  skips = pageSize * (pagenum -1);
+                posts = await Post.find({}).sort({createdDate: 'desc'}).populate({
+                    path: 'createdBy',
+                    model: 'User'
+                }).skip(skips).limit(pageSize);
+            }
+
+            const totalDocs = await Post.countDocuments();
+            const hasMore = totalDocs > pageSize * pagenum;
+            return {posts, hasMore};
+        }
     },
 
     Mutation: {
