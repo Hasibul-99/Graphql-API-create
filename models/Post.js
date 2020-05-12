@@ -32,16 +32,16 @@ const PostSchema = new mongoose.Schema({
         required: true,
         ref: 'User'
     },
-    massages: [{
+    messages: [{
         messageBody: {
             type: String,
             required: true
         },
-        massageDate: {
+        messageDate: {
             type: Date,
             default: Date.now
         },
-        massageUser: {
+        messageUser: {
             type: mongoose.Schema.Types.ObjectId,
             required: true,
             ref: 'User'
