@@ -72,6 +72,18 @@ module.exports = {
 
                 return searchResult;
             }
+        },
+
+        getUserPosts: async(_,{userId}, {Post}) => {
+            if (userId) {
+                const result = await Post.find({
+                    createdBy: userId
+                }).sort({
+                    createdDate: 'desc'
+                }).limit(5)
+
+                return result;
+            }
         }
     },
 
