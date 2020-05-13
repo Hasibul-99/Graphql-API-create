@@ -188,6 +188,16 @@ module.exports = {
 
             // return only likes frompost and favorites from user
             return { likes: post.likes, favorites: user.favorites };
-        }, 
+        },
+
+        updateUserPost: async(_, {postId, userId, title, imageUrl, description, categories}, {Post}) => {
+            const post = await Post.findOneAndUpdate(
+                {_id: postId, createdBy: userId},
+                { $set: {"title": title, imageUrl: imageUrl, categories: categories, description: description}},
+                {new: true}
+            )
+
+            return post;
+        }
     }
 }
